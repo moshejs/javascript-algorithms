@@ -7,8 +7,7 @@
 class MinHeapAdhoc {
   constructor(heap = []) {
     this.heap = [];
-    // Use an arrow function so that `this` inside add() refers to the heap.
-    heap.forEach((num) => this.add(num));
+    heap.forEach(this.add);
   }
 
   add(num) {

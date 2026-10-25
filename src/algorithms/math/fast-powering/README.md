@@ -25,9 +25,8 @@ operation exactly `b - 1` times.
 Can we do better than naive algorithm does? Yes we may solve the task of
 powering in `O(log(b))` time.
 
-The algorithm uses divide and conquer approach to compute power. The
-algorithm works for an integer base `X` and an integer power `Y`
-(negative powers are supported as well).
+The algorithm uses divide and conquer approach to compute power. Currently the
+algorithm work for two positive integers `X` and `Y`.
 
 The idea behind the algorithm is based on the fact that:
 
@@ -42,12 +41,6 @@ For **odd** `Y`:
 ```text
 X^Y = X^(Y//2) * X^(Y//2) * X
 where Y//2 is result of division of Y by 2 without remainder.
-```
-
-For **negative** `Y`:
-
-```text
-X^Y = 1 / X^(-Y)
 ```
 
 **For example**

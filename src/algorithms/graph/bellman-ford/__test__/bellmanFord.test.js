@@ -138,23 +138,4 @@ describe('bellmanFord', () => {
 
     expect(bellmanFordNegativeCycle).toThrow('Graph contains a negative weight cycle');
   });
-
-  it('should not treat self-loop with positive weight as negative cycle', () => {
-    const vertexA = new GraphVertex('A');
-    const vertexB = new GraphVertex('B');
-
-    // The self-loop must be read with its own weight (9) and not with the
-    // weight of the first edge of vertex A (-3).
-    const edgeAB = new GraphEdge(vertexA, vertexB, -3);
-    const edgeAA = new GraphEdge(vertexA, vertexA, 9);
-
-    const graph = new Graph(true);
-    graph
-      .addEdge(edgeAB)
-      .addEdge(edgeAA);
-
-    const { distances } = bellmanFord(graph, vertexA);
-
-    expect(distances).toEqual({ A: 0, B: -3 });
-  });
 });

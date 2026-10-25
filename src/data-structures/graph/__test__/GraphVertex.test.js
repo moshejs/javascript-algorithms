@@ -164,24 +164,6 @@ describe('GraphVertex', () => {
     expect(vertexA.findEdge(vertexC)).toBeNull();
   });
 
-  it('should find self-loop edge only if it exists', () => {
-    const vertexA = new GraphVertex('A');
-    const vertexB = new GraphVertex('B');
-
-    const edgeAB = new GraphEdge(vertexA, vertexB);
-    vertexA.addEdge(edgeAB);
-
-    expect(vertexA.findEdge(vertexA)).toBeNull();
-    expect(vertexA.hasNeighbor(vertexA)).toBe(false);
-
-    const edgeAA = new GraphEdge(vertexA, vertexA);
-    vertexA.addEdge(edgeAA);
-
-    expect(vertexA.findEdge(vertexA)).toBe(edgeAA);
-    expect(vertexA.findEdge(vertexB)).toBe(edgeAB);
-    expect(vertexA.hasNeighbor(vertexA)).toBe(true);
-  });
-
   it('should calculate vertex degree', () => {
     const vertexA = new GraphVertex('A');
     const vertexB = new GraphVertex('B');

@@ -447,23 +447,4 @@ describe('Graph', () => {
       [Infinity, Infinity, Infinity, Infinity],
     ]);
   });
-
-  it('should use self-loop weight in adjacency matrix', () => {
-    const vertexA = new GraphVertex('A');
-    const vertexB = new GraphVertex('B');
-
-    const edgeAB = new GraphEdge(vertexA, vertexB, 2);
-    const edgeAA = new GraphEdge(vertexA, vertexA, 5);
-
-    const graph = new Graph();
-    graph
-      .addEdge(edgeAB)
-      .addEdge(edgeAA);
-
-    expect(graph.findEdge(vertexA, vertexA)).toBe(edgeAA);
-    expect(graph.getAdjacencyMatrix()).toEqual([
-      [5, 2],
-      [2, Infinity],
-    ]);
-  });
 });

@@ -16,7 +16,6 @@ export default function rabinKarp(text, word) {
   // Calculate word hash that we will use for comparison with other substring hashes.
   const wordHash = hasher.hash(word);
 
-  let prevFrame = null;
   let currentFrameHash = null;
 
   // The position of the current frame in terms of UTF-16 code units. It is being
@@ -26,21 +25,27 @@ export default function rabinKarp(text, word) {
 
   // Go through all substring of the text that may match.
   for (let charIndex = 0; charIndex <= (textChars.length - wordChars.length); charIndex += 1) {
-    const currentFrame = textChars.slice(charIndex, charIndex + wordChars.length).join('');
-
-    // Calculate the hash of current substring.
+    // Calculate the hash of current substring. Only the first frame is hashed
+    // completely. All other frames are hashed in O(1) time by rolling the previous
+    // hash: the char that leaves the frame is removed and the new one is added.
     if (currentFrameHash === null) {
-      currentFrameHash = hasher.hash(currentFrame);
+      currentFrameHash = hasher.hash(textChars.slice(0, wordChars.length).join(''));
     } else {
-      currentFrameHash = hasher.roll(currentFrameHash, prevFrame, currentFrame);
+      currentFrameHash = hasher.rollChar(
+        currentFrameHash,
+        textChars[charIndex - 1],
+        textChars[charIndex + wordChars.length - 1],
+        wordChars.length,
+      );
     }
-
-    prevFrame = currentFrame;
 
     // Compare the hash of current substring and seeking string.
     // In case if hashes match let's make sure that substrings are equal.
     // In case of hash collision the strings may not be equal.
-    if (wordHash === currentFrameHash && currentFrame === word) {
+    if (
+      wordHash === currentFrameHash
+      && textChars.slice(charIndex, charIndex + wordChars.length).join('') === word
+    ) {
       return utf16Position;
     }
 

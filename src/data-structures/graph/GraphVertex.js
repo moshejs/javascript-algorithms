@@ -91,11 +91,7 @@ export default class GraphVertex {
    * @returns {boolean}
    */
   hasNeighbor(vertex) {
-    const vertexNode = this.edges.find({
-      callback: (edge) => edge.startVertex === vertex || edge.endVertex === vertex,
-    });
-
-    return !!vertexNode;
+    return !!this.findEdge(vertex);
   }
 
   /**
@@ -103,8 +99,12 @@ export default class GraphVertex {
    * @returns {(GraphEdge|null)}
    */
   findEdge(vertex) {
+    // Every edge in the list touches the current vertex, so both of the edge ends
+    // must be checked. Otherwise findEdge(this) would return the first edge of the
+    // vertex instead of the self-loop.
     const edgeFinder = (edge) => {
-      return edge.startVertex === vertex || edge.endVertex === vertex;
+      return (edge.startVertex === this && edge.endVertex === vertex)
+        || (edge.startVertex === vertex && edge.endVertex === this);
     };
 
     const edge = this.edges.find({ callback: edgeFinder });
